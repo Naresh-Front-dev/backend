@@ -3,7 +3,7 @@ const express = require("express");
 // const bodyParser = require("body-parser"); // Explicitly require body-parser
 const app = express();
 dotenv.config();
-const port = process.env.PORT || 10000;
+const port = process.env.PORT || 3000;
 
 // Middleware
 
