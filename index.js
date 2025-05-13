@@ -1,8 +1,6 @@
 const dotenv = require("dotenv");
 const express = require("express");
 // const bodyParser = require("body-parser"); // Explicitly require body-parser
-
-
 const app = express();
 dotenv.config();
 const port = process.env.PORT || 10000;
@@ -11,9 +9,8 @@ const port = process.env.PORT || 10000;
 
 const cors = require("cors");
 app.use(cors({
-  origin: ["https://naresh-front-dev.github.io",
-    "http://localhost:10000",
-  ], // Allow all origins for testing
+  origin: ["https://naresh-front-dev.github.io"],
+   // Allow all origins for testing
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
@@ -404,7 +401,7 @@ function filterFlights(query) {
 }
 
 // API endpoint for searching flights
-app.get("/", async (req, res) => {
+app.get("/api/flights", async (req, res) => {
   const { from, to, date, cabin_class, airline, min_price, max_price } =
     req.query;
   console.log(req.query);
@@ -444,6 +441,6 @@ app.get("/", async (req, res) => {
 // 
 // // Start the server
 app.listen(port, () => {
-  console.log(`Flight search API is running at http://localhost:${port}`);
+  console.log(`Flight search API is running at http://localhost:${port}api/flights`);
 });
 // npm run server
