@@ -9,7 +9,6 @@ const port = process.env.PORT|| 10000;
 
 // Middleware
 
-app.use(cors());
 const cors = require("cors");
 app.use(cors({
     origin: "*", // Allow all origins for testing
