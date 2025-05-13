@@ -401,7 +401,7 @@ function filterFlights(query) {
 }
 
 // API endpoint for searching flights
-app.get("/api/flights", async (req, res) => {
+app.get("/", async (req, res) => {
   const { from, to, date, cabin_class, airline, min_price, max_price } =
     req.query;
   console.log(req.query);
@@ -441,6 +441,6 @@ app.get("/api/flights", async (req, res) => {
 // 
 // // Start the server
 app.listen(port, () => {
-  console.log(`Flight search API is running at http://localhost:${port}api/flights`);
+  console.log(`Flight search API is running at http://localhost:${port}`);
 });
 // npm run server
