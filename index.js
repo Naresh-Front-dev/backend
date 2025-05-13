@@ -2,13 +2,17 @@ const dotenv = require("dotenv");
 const express = require("express");
 // const bodyParser = require("body-parser"); // Explicitly require body-parser
 const cors = require("cors");
+
 const app = express();
 dotenv.config();
-const port = process.env.PORT|| 10000;
+const port = process.env.PORT|| 3000;
 
 // Middleware
 
 app.use(cors());
+app.use(cors({
+    origin: "*"
+}));
 
 app.use(express.json()); // for parsing application/json
 
@@ -436,5 +440,6 @@ app.get("/api/flights", async (req, res) => {
 // // Start the server
 app.listen(port, () => {
   console.log(`Flight search API is running at http://localhost:${port}/api/flights`);
+    console.log(`You can access the production API at https://backend-1u0t.onrender.com/api/flights`);
 });
 // npm run server
