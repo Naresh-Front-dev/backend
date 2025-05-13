@@ -1,25 +1,29 @@
 const dotenv = require("dotenv");
 const express = require("express");
-const cors = require("cors");
+// const bodyParser = require("body-parser"); // Explicitly require body-parser
 const app = express();
 dotenv.config();
-const port = process.env.PORT || 3000;
+const port = 3000;
 
-// CORS Configuration - Fixed syntax and structure
+// Middleware
+
+const cors = require("cors");
+
+// Configure CORS middleware
 app.use(cors({
   origin: [
-    "http://localhost:3000",
-    "https://naresh-front-dev.github.io",
-    "https://flight-booking-react-project-3.vercel.app"
+    "http://localhost:3000", // Local development
+    "https://naresh-front-dev.github.io", // Your GitHub Pages URL// If using Vercel
   ],
-  methods: ["GET", "POST", "OPTIONS"],
+  methods: ["GET", "POST", "OPTIONS"], // Added OPTIONS for preflight requests
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
-}));
+  credentials: true // If using cookies/auth
+}));;
 
-app.use(express.json());
 
-// Your original flight data remains unchanged
+app.use(express.json()); // for parsing application/json
+
+// Sample flight data (in-memory database)
 const flights = [
   {
     "flight_id": "AI202",
@@ -351,55 +355,97 @@ const flights = [
       "checked": "2 bags (23 kg each)"
     }
   }
-]; // Keep all your existing flight data here
+];
 
-// Fixed filterFlights function (same logic, just cleaner)
+// Flight search route
+
+// Filter function for flights
 function filterFlights(query) {
   return flights.filter((flight) => {
-    if (query.from && flight.departure.city.toLowerCase() !== query.from.toLowerCase())
+    // From city filter
+    if (
+      query.from &&
+      query.from.toLowerCase() &&
+      flight.departure.city.toLowerCase() !== query.from.toLowerCase()
+    )
       return false;
-    if (query.to && flight.arrival.city.toLowerCase() !== query.to.toLowerCase())
+
+    // To city filter
+    if (
+      query.to &&
+      query.to.toLowerCase() &&
+      flight.arrival.city.toLowerCase() !== query.to.toLowerCase()
+    )
       return false;
-    if (query.date && flight.departure.date !== query.date)
+
+    // Date filter
+    if (query.date && flight.departure.date !== query.date) return false;
+
+    // Cabin class filter
+    if (
+      query.cabin_class &&
+      query.cabin_class.toLowerCase() &&
+      flight.cabin_class.toLowerCase() !== query.cabin_class.toLowerCase()
+    )
       return false;
-    if (query.cabin_class && flight.cabin_class.toLowerCase() !== query.cabin_class.toLowerCase())
+
+    // Airline filter
+    if (
+      query.airline &&
+      query.airline.toLowerCase() &&
+      flight.airline.toLowerCase() !== query.airline.toLowerCase()
+    )
       return false;
-    if (query.airline && flight.airline.toLowerCase() !== query.airline.toLowerCase())
-      return false;
-    if (query.min_price && flight.price.amount < parseInt(query.min_price))
-      return false;
-    if (query.max_price && flight.price.amount > parseInt(query.max_price))
-      return false;
+
+    // Price filter (min and max price)
+    if (query.min_price && flight.price.amount < query.min_price) return false;
+    if (query.max_price && flight.price.amount > query.max_price) return false;
+
     return true;
   });
 }
 
-// Main endpoint - Fixed with better error handling
-app.get("/", (req, res) => {
-  try {
-    const { from, to, date, cabin_class, airline, min_price, max_price } = req.query;
+// API endpoint for searching flights
+app.get("/api/flights", async (req, res) => {
+  const { from, to, date, cabin_class, airline, min_price, max_price } =
+    req.query;
+  console.log(req.query);
+  // Filter flights based on the query parameters
+  const filteredFlights = await filterFlights({
+    from,
+    to,
+    date,
+    cabin_class,
+    airline,
+    min_price: min_price ? parseInt(min_price) : undefined,
+    max_price: max_price ? parseInt(max_price) : undefined,
+  });
 
-    const filteredFlights = filterFlights({
-      from,
-      to,
-      date,
-      cabin_class,
-      airline,
-      min_price,
-      max_price
-    });
-
-    setTimeout(() => {
-      res.json(filteredFlights);
-    }, 1500);
-
-  } catch (error) {
-    console.error("Error processing request:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
+  setTimeout(() => {
+    res.json(filteredFlights);
+  }, 1500);
 });
 
-// Start server - Added '0.0.0.0' for better deployment compatibility
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Flight search API is running at http://localhost:${port}`);
+// Debugging: Log the filtered flights
+// console.log("Filtered flights:", filteredFlights);
+
+// Send response with filtered flights after 1 second (to simulate a delay)
+//   setTimeout(() => {
+//     if (filteredFlights.length === 0) {
+//       return res.status(404).json({ message: "No flights found for the given criteria." });
+//     }
+// 
+//     res.status(200).json(filteredFlights);
+//   }, 1000);
+// });nodemon index.js
+
+// Root route for testing
+// app.get("/", (req, res) => {
+//   res.send(flights);
+// });
+// 
+// // Start the server
+app.listen(port, () => {
+  console.log(`Flight search API is running at http://localhost:${port}api/flights`);
 });
+// npm run server
