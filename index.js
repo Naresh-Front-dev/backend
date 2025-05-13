@@ -5,15 +5,17 @@ const cors = require("cors");
 
 const app = express();
 dotenv.config();
-const port = process.env.PORT|| 10000;
+const port = process.env.PORT || 10000;
 
 // Middleware
 
 const cors = require("cors");
 app.use(cors({
-    origin: "https://naresh-front-dev.github.io", // Allow all origins for testing
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"]
+  origin: ["https://naresh-front-dev.github.io",
+    "http://localhost:10000",
+  ], // Allow all origins for testing
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 
@@ -422,10 +424,10 @@ app.get("/", async (req, res) => {
   }, 1500);
 });
 
-  // Debugging: Log the filtered flights
-  // console.log("Filtered flights:", filteredFlights);
+// Debugging: Log the filtered flights
+// console.log("Filtered flights:", filteredFlights);
 
-  // Send response with filtered flights after 1 second (to simulate a delay)
+// Send response with filtered flights after 1 second (to simulate a delay)
 //   setTimeout(() => {
 //     if (filteredFlights.length === 0) {
 //       return res.status(404).json({ message: "No flights found for the given criteria." });
