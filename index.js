@@ -1,5 +1,4 @@
-import express from "express";
-import dotenv from "dotenv";
+const dotenv = require("dotenv");
 const express = require("express");
 // const bodyParser = require("body-parser"); // Explicitly require body-parser
 const cors = require("cors");
