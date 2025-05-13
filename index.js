@@ -11,7 +11,7 @@ const port = process.env.PORT|| 10000;
 
 const cors = require("cors");
 app.use(cors({
-    origin: "*", // Allow all origins for testing
+    origin: "https://naresh-front-dev.github.io", // Allow all origins for testing
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
