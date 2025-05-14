@@ -11,10 +11,7 @@ const cors = require("cors");
 
 // Configure CORS middleware
 app.use(cors({
-  origin: [
-    "http://localhost:3000", // Local development
-    "https://naresh-front-dev.github.io", // Your GitHub Pages URL// If using Vercel
-  ],
+  origin:"*",
   methods: ["GET", "POST", "OPTIONS"], // Added OPTIONS for preflight requests
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true // If using cookies/auth
