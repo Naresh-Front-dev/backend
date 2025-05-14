@@ -7,7 +7,7 @@ const port = 3000;
 
 // Middleware
 
-const cors = require("cors");
+
 
 // Configure CORS middleware
 const cors = require("cors");
