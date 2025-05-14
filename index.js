@@ -10,9 +10,12 @@ const port = 3000;
 const cors = require("cors");
 
 // Configure CORS middleware
-app.use(cors({
-  origin:"*"
-}));;
+const cors = require("cors");
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://localhost:3000"],
+  })
+);
 
 
 app.use(express.json()); // for parsing application/json
