@@ -440,6 +440,6 @@ app.get("/", async (req, res) => {
 // 
 // // Start the server
 app.listen(port, () => {
-  console.log(`Flight search API is running at http://localhost:${port}/api/flights`);
+  console.log(`Flight search API is running at http://localhost:${port}`);
 });
 // npm run server
