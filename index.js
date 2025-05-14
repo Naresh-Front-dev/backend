@@ -406,7 +406,7 @@ function filterFlights(query) {
 }
 
 // API endpoint for searching flights
-app.get("/api/flights", async (req, res) => {
+app.get("/", async (req, res) => {
   const { from, to, date, cabin_class, airline, min_price, max_price } =
     req.query;
   console.log(req.query);
